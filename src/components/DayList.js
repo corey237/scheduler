@@ -11,7 +11,7 @@ function DayList(props) {
     return (
       <DayListItem
         key={currentValue.id}
-        name={currentValue.day}
+        name={currentValue.name}
         spots={currentValue.spots}
         selected={props.day === currentValue.name}
         setDay={props.setDay}
