@@ -13,8 +13,8 @@ function DayList(props) {
         key={currentValue.id}
         name={currentValue.name}
         spots={currentValue.spots}
-        selected={props.day === currentValue.name}
-        setDay={props.setDay}
+        selected={props.value === currentValue.name}
+        setDay={props.onChange}
       />
     );
   });
