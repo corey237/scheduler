@@ -3,43 +3,51 @@ import DayList from "./DayList";
 import "components/Application.scss";
 import Appointment from "./Appointment";
 import axios from "axios";
-import { getAppointmentsForDay } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {},
+    interviewers: {},
   });
 
   const setDay = (day) => setState({ ...state, day });
   const setDays = (days) => setState((prev) => ({ ...prev, days }));
+
   const setAppointments = (appointments) =>
     setState((prev) => ({ ...prev, appointments }));
+
+  const setInterviewers = (interviewers) =>
+    setState((prev) => ({ ...prev, interviewers }));
+
   useEffect(() => {
-    Promise.all([axios.get("/api/days"), axios.get("/api/appointments")]).then(
-      (all) => {
-        setDays(all[0].data);
-        setAppointments(all[1].data);
-      }
-    );
+    Promise.all([
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers"),
+    ]).then((all) => {
+      setDays(all[0].data);
+      setAppointments(all[1].data);
+      setInterviewers(all[2].data);
+      // setState({ ...state, interviewers: all[2].data });
+    });
   }, []);
   const appointmentsForDay = getAppointmentsForDay(state, state.day);
-  const dailyAppointments = Object.values(appointmentsForDay).map(
-    (currentAppointment) => {
-      if (!currentAppointment) {
-        return;
-      }
-      return (
-        <Appointment
-          key={currentAppointment.id}
-          id={currentAppointment.id}
-          time={currentAppointment.time}
-          interview={currentAppointment.interview}
-        />
-      );
+  const dailyAppointments = appointmentsForDay.map((currentAppointment) => {
+    if (!currentAppointment) {
+      return null;
     }
-  );
-
+    const interviewsForDay = getInterview(state, currentAppointment.interview);
+    return (
+      <Appointment
+        key={currentAppointment.id}
+        id={currentAppointment.id}
+        time={currentAppointment.time}
+        interview={interviewsForDay}
+      />
+    );
+  });
   return (
     <main className="layout">
       <section className="sidebar">
