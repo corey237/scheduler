@@ -17,13 +17,6 @@ export default function Application(props) {
   });
 
   const setDay = (day) => setState({ ...state, day });
-  const setDays = (days) => setState((prev) => ({ ...prev, days }));
-
-  const setAppointments = (appointments) =>
-    setState((prev) => ({ ...prev, appointments }));
-
-  const setInterviewers = (interviewers) =>
-    setState((prev) => ({ ...prev, interviewers }));
 
   useEffect(() => {
     Promise.all([
@@ -31,10 +24,12 @@ export default function Application(props) {
       axios.get("/api/appointments"),
       axios.get("/api/interviewers"),
     ]).then((all) => {
-      setDays(all[0].data);
-      setAppointments(all[1].data);
-      setInterviewers(all[2].data);
-      // setState({ ...state, interviewers: all[2].data });
+      setState((prev) => ({
+        ...prev,
+        interviewers: all[2].data,
+        days: all[0].data,
+        appointments: all[1].data,
+      }));
     });
   }, []);
   const appointmentsForDay = getAppointmentsForDay(state, state.day);
@@ -51,9 +46,27 @@ export default function Application(props) {
         time={currentAppointment.time}
         interview={interviewsForDay}
         interviewers={interviewersForDay}
+        bookInterview={bookInterview}
       />
     );
   });
+
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+    return axios
+      .put(`/api/appointments/${id}`, appointment)
+      .then(setState({ ...state, appointments }));
+  }
+
+  function cancelInterview() {}
+
   return (
     <main className="layout">
       <section className="sidebar">
