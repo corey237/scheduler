@@ -45,10 +45,6 @@ function Appointment(props) {
       .catch(() => transition(ERROR_DELETE, true));
   }
 
-  function editAppointment(name, interviewer) {
-    transition(CREATE);
-  }
-
   return (
     <>
       <article className="appointment">
