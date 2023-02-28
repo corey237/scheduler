@@ -5,12 +5,10 @@ export default function useVisualMode(initial) {
   const [history, setHistory] = useState([initial]);
   function transition(newMode, replace = false) {
     if (!replace) {
-      setHistory([...history, newMode]);
+      setHistory((prev) => [...prev, newMode]);
       setMode(newMode);
     } else {
-      const historyCopy = [...history];
-      historyCopy.pop();
-      setHistory([...historyCopy, newMode]);
+      setHistory((prev) => [...prev.slice(0, -1), newMode]);
       setMode(newMode);
     }
   }
@@ -19,7 +17,7 @@ export default function useVisualMode(initial) {
       const historyCopy = [...history];
       historyCopy.pop();
       setMode(historyCopy[historyCopy.length - 1]);
-      setHistory([...historyCopy]);
+      setHistory((prev) => [...prev.slice(0, -1)]);
     }
   }
   return { mode, transition, back };
