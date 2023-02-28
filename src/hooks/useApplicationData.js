@@ -24,6 +24,17 @@ export function useApplicationData() {
     });
   }, []);
   const setDay = (day) => setState({ ...state, day });
+  const updatedDays = function (appointmentId, appointments) {
+    const foundDay = state.days.find((day) =>
+      day.appointments.includes(appointmentId)
+    );
+    const spots = foundDay.appointments.filter(
+      (id) => appointments[id].interview === null
+    ).length;
+    return state.days.map((day) =>
+      day.appointments.includes(appointmentId) ? { ...day, spots } : day
+    );
+  };
 
   function bookInterview(id, interview) {
     const appointment = {
@@ -36,7 +47,13 @@ export function useApplicationData() {
     };
     return axios
       .put(`/api/appointments/${id}`, appointment)
-      .then(() => setState({ ...state, appointments }));
+      .then(() =>
+        setState({
+          ...state,
+          appointments,
+          days: updatedDays(id, appointments),
+        })
+      );
   }
 
   function cancelInterview(id) {
@@ -49,7 +66,7 @@ export function useApplicationData() {
       [id]: appointment,
     };
     return axios.delete(`/api/appointments/${id}`).then(() => {
-      setState({ ...state, appointments });
+      setState({ ...state, appointments, days: updatedDays(id, appointments) });
     });
   }
 
