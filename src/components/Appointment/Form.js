@@ -10,6 +10,7 @@ function Form(props) {
     setInterviewer("");
   };
   const cancel = function () {
+    setError("");
     reset();
     props.onCancel();
   };
@@ -22,6 +23,7 @@ function Form(props) {
       setError("please select an interviewer");
       return;
     } else {
+      setError("");
       return props.onSave(student, interviewer);
     }
   };
