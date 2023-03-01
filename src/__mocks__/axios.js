@@ -79,4 +79,19 @@ export default {
       });
     }
   }),
+  put: jest.fn((url, id) => {
+    if (url === "/api/appointments/1") {
+      return Promise.resolve({
+        status: 204,
+        statusText: "OK",
+      });
+    }
+
+    if (url === "/api/appointments/2") {
+      return Promise.resolve({
+        status: 204,
+        statusText: "OK",
+      });
+    }
+  }),
 };
