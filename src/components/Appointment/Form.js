@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Button from "components/Button";
 import InterviewerList from "components/InterviewerList";
 function Form(props) {
-  console.log(props.interviewer);
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
+  const [error, setError] = useState("");
   const reset = function () {
     setStudent("");
     setInterviewer("");
@@ -12,6 +12,18 @@ function Form(props) {
   const cancel = function () {
     reset();
     props.onCancel();
+  };
+
+  const validate = function () {
+    if (student === "") {
+      setError("Student name cannot be blank");
+      return;
+    } else if (interviewer === null) {
+      setError("please select an interviewer");
+      return;
+    } else {
+      return props.onSave(student, interviewer);
+    }
   };
 
   return (
@@ -25,6 +37,7 @@ function Form(props) {
             placeholder="Enter Student Name"
             value={student}
             onChange={(event) => setStudent(event.target.value)}
+            data-testid="student-name-input"
 
             /*
           This must be a controlled component
@@ -32,6 +45,7 @@ function Form(props) {
         */
           />
         </form>
+        <section className="appointment__validation">{error}</section>
         <InterviewerList
           interviewers={props.interviewers}
           value={interviewer}
@@ -43,7 +57,7 @@ function Form(props) {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={() => props.onSave(student, interviewer)}>
+          <Button confirm onClick={validate}>
             Save
           </Button>
         </section>
