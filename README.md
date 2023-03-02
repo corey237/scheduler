@@ -10,7 +10,7 @@ Interview Scheduler is a full stack application that lets a user book, delete an
 
 Front-End: ReactJS, JSX, HTML, CSS\
 Back-End: Node, Express, PostgreSQL\
-Testing: Jest, Cypress
+Testing: Jest, Cypress, Storybook
 
 ## Screenshots
 
