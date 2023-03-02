@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export function useApplicationData() {
+  //State initialization
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {},
   });
-
+  //Making API call to backend for data, promise will reject if one of them fails
   useEffect(() => {
     Promise.all([
       axios.get("/api/days"),
@@ -45,15 +46,13 @@ export function useApplicationData() {
       ...state.appointments,
       [id]: appointment,
     };
-    return axios
-      .put(`/api/appointments/${id}`, appointment)
-      .then(() =>
-        setState({
-          ...state,
-          appointments,
-          days: updatedDays(id, appointments),
-        })
-      );
+    return axios.put(`/api/appointments/${id}`, appointment).then(() =>
+      setState({
+        ...state,
+        appointments,
+        days: updatedDays(id, appointments),
+      })
+    );
   }
 
   function cancelInterview(id) {

@@ -18,6 +18,8 @@ const EDIT = "EDIT";
 const ERROR_SAVE = "ERROR_SAVE";
 const ERROR_DELETE = "ERROR_DELETE";
 
+//Appointment view is rendered based on the mode that is set.
+//The state is changed in useVisualMode.js
 function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY

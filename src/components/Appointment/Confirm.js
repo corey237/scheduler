@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "components/Button";
 
+//Component for confirming appointment deletion
 function Confirm(props) {
   return (
     <main className="appointment__card appointment__card--confirm">

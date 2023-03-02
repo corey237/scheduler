@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "components/Button";
 import InterviewerList from "components/InterviewerList";
 function Form(props) {
+  //State declaration for appointment form, if one has not been saved previously, show as empty
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState("");
@@ -9,12 +10,15 @@ function Form(props) {
     setStudent("");
     setInterviewer("");
   };
+
+  //If user decides to cancel saving interview, view is reset and cancel function is run
   const cancel = function () {
     setError("");
     reset();
     props.onCancel();
   };
 
+  //Form validation
   const validate = function () {
     if (student === "") {
       setError("Student name cannot be blank");
@@ -40,11 +44,6 @@ function Form(props) {
             value={student}
             onChange={(event) => setStudent(event.target.value)}
             data-testid="student-name-input"
-
-            /*
-          This must be a controlled component
-          your code goes here
-        */
           />
         </form>
         <section className="appointment__validation">{error}</section>

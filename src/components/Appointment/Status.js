@@ -1,5 +1,5 @@
 import React from "react";
-
+//Component for status view (When appointment is either being saved or deleted)
 function Status(props) {
   return (
     <main className="appointment__card appointment__card--status">
