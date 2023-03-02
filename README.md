@@ -8,33 +8,33 @@ Interview Scheduler is a full stack application that lets a user book, delete an
 
 ## Technologies
 
-Front-End: React, JSX, HTML, CSS
-Back-End: Node, Express, PostgreSQL
+Front-End: ReactJS, JSX, HTML, CSS\
+Back-End: Node, Express, PostgreSQL\
 Testing: Jest, Cypress
 
 ## Screenshots
 
 Initial Calendar View on Load
 
-![Initial Calendar View]( "Initial Calendar View")
+![Initial Calendar View](https://github.com/corey237/scheduler/blob/master/screenshots/appointment_view.PNG?raw=true "Initial Calendar View")
 
 Creating a new Appointment
 
-![Creating a new Appointment]( "Creating a new Appointment")
+![Creating a new Appointment](https://github.com/corey237/scheduler/blob/master/screenshots/saving_appointment.PNG?raw=true "Creating a new Appointment")
 
 Calendar view once the appointment is saved
 
-![Calendar with new Appointment]("Calendar with new Appointment")
+![Calendar with new Appointment](https://github.com/corey237/scheduler/blob/master/screenshots/new_appointment.PNG?raw=true "Calendar with new Appointment")
 
-Example of error handling if appointment cannot be saved or deleted from backend
+Example of error handling if appointment cannot be saved or deleted
 
-![Error Handling]( "Error Handling")
+![Error Handling](https://github.com/corey237/scheduler/blob/master/screenshots/error_handling.PNG?raw=true "Error Handling")
 
 ## Instructions
 
 1. in your terminal, run <code>npm install</code> to install the dependencies
 2. Visit http://localhost:8000/ to start using the app!
 
-NOTE: In order for the application to function correctly, the scheduler-api backend will need to be downloaded and running at the same time as the application. The download link can be found below
+NOTE: In order for the application to function correctly, the scheduler-api backend will need to be downloaded and running at the same time as the application. The download link can be found below (Instructions for scheduler-api setup are in the README file)
 
 https://github.com/corey237/scheduler-api
