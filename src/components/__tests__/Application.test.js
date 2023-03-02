@@ -130,4 +130,53 @@ describe("Application", () => {
     );
     expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
   });
+  it("shows the save error when failing to save an appointment", async () => {
+    axios.put.mockRejectedValueOnce();
+    const { container } = render(<Application />);
+    // 2. Wait until the text "Archie Cohen" is displayed.
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+    // 3. Click the "Add" button on the first empty appointment.
+    const appointments = getAllByTestId(container, "appointment");
+    const appointment = appointments[0];
+    fireEvent.click(getByAltText(appointment, "Add"));
+    // 4. Enter the name "Lydia Miller-Jones" into the input with the placeholder "Enter Student Name".
+    fireEvent.change(getByPlaceholderText(appointment, /enter student name/i), {
+      target: { value: "Lydia Miller-Jones" },
+    });
+    // 5. Click the first interviewer in the list.
+    fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+    fireEvent.click(getByText(appointment, "Save"));
+    expect(getByText(appointment, "Saving")).toBeInTheDocument();
+    await waitForElement(() =>
+      getByText(appointment, "Could not save appointment.")
+    );
+    expect(
+      getByText(appointment, "Could not save appointment.")
+    ).toBeInTheDocument();
+  });
+  it("shows the delete error when failing to delete an existing appointment", async () => {
+    axios.delete.mockRejectedValueOnce();
+    // 1. Render the Application.
+    const { container } = render(<Application />);
+    // 2. Wait until the text "Archie Cohen" is displayed.
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+    // 3. Click the "Delete" button on the booked appointment.
+    const appointments = getAllByTestId(container, "appointment");
+    const appointment = appointments[1];
+    fireEvent.click(getByAltText(appointment, "Delete"));
+    // 4. Check that the confirmation message is shown.
+    expect(
+      getByText(appointment, "Are you sure you want to delete?")
+    ).toBeInTheDocument();
+    // 5. Click the "Confirm" button on the confirmation.
+    fireEvent.click(getByText(appointment, "Confirm"));
+    expect(getByText(appointment, "Deleting")).toBeInTheDocument();
+    await waitForElement(() =>
+      getByText(appointment, "Could not delete appointment.")
+    );
+    console.log(prettyDOM(appointment));
+    // expect(
+    //   getByText(appointment, "Could not delete appointment.")
+    // ).toBeInTheDocument();
+  });
 });
